@@ -1,17 +1,11 @@
-# Notion website template
+# Website Redirection to Notion HomePage
 
-Make a website using Notion, GitHub Pages and Loconotion in just 5 steps.
+This repository serves as a simple redirection page for my personal website hosted on GitHub Pages. The purpose of this page is to automatically redirect visitors to my Notion homepage.
 
-1. Fork this repo or press [use this template button](https://github.com/timovv/notion-website-template/generate).
-1. Create a Notion page to be your website. This can have subpages, databases, anything supported by [Loconotion](https://github.com/leoncvlt/loconotion).
-1. Share your Notion page publicly, and update `site.toml` in your repo to point to it.
-1. Run the `Publish Notion website to GitHub Pages` action under the Actions tab of your repo.
-1. Update your repo's `Pages` settings to use the `gh-pages` branch, hit save, and voila!
+## Redirection
 
-To resync the website, simply run the GitHub action again. `site.toml` can be updated to use any of the settings specified in the [Loconotion README](https://github.com/leoncvlt/loconotion/blob/master/README.md).
+The GitHub Pages website hosted at [https://lulopdz.github.io/](https://lulopdz.github.io/) automatically redirects visitors to my Notion homepage at [https://lulopdz.notion.site/](https://lulopdz.notion.site/).
 
-## Acknowledgements
+## How it works
 
-Thanks to:
-- @leoncvt for creating the Loconotion script
-- @X1011 for the original script used to deploy the website to GitHub pages
+The redirection is accomplished by adding an `index.html` file to the root of this repository with the following code:
