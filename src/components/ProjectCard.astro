@@ -1,0 +1,94 @@
+---
+// src/components/ProjectCard.astro
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  featured?: boolean;
+  inProgress?: boolean;
+  statusBadge?: string;
+  link?: string;
+  linkLabel?: string;
+  code?: string;
+  tags?: string[];
+}
+
+const {
+  title,
+  description,
+  image,
+  featured = false,
+  inProgress = false,
+  statusBadge,
+  link,
+  linkLabel = 'Access',
+  code,
+  tags = []
+} = Astro.props;
+
+const tagString = tags.map((t) => t.toLowerCase()).join(',');
+---
+
+<div class={`tool-card ${featured ? 'featured' : ''} ${inProgress ? 'in-progress' : ''}`} data-tags={tagString}>
+  <!-- Full-Width Card Banner / Header Graphic -->
+  {image && (
+    <div class="tool-banner-wrapper">
+      {link ? (
+        <a href={link} target="_blank" rel="noopener" class="tool-banner-link" title={title}>
+          <img src={image} alt={title} class="tool-banner-img" loading="lazy" />
+        </a>
+      ) : (
+        <div class="tool-banner-container">
+          <img src={image} alt={title} class="tool-banner-img" loading="lazy" />
+        </div>
+      )}
+    </div>
+  )}
+
+  <div class="tool-content">
+    <div class="tool-body">
+      <h3 class="tool-title">
+        {link ? (
+          <a href={link} target="_blank" rel="noopener">
+            {title}
+          </a>
+        ) : (
+          <span>{title}</span>
+        )}
+      </h3>
+
+      <!-- Tags (pbb.sh pill tags) -->
+      {tags.length > 0 && (
+        <div class="tool-tags">
+          {tags.map((tag) => (
+            <span class={`tool-tag tag-${tag.toLowerCase().replace(/[^a-z0-9]/g, '')}`}>{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <!-- Description -->
+      <p class="tool-desc">
+        {description}
+      </p>
+    </div>
+
+    <!-- Card Footer Links -->
+    <div class="tool-footer">
+      {link && (
+        <a href={link} target="_blank" rel="noopener" class="tool-action-btn">
+          <i class="fas fa-external-link-alt"></i> {linkLabel}
+        </a>
+      )}
+      {inProgress && (
+        <span class="tool-wip-badge">
+          <span class="pulse-dot"></span> {statusBadge || 'Under Active Development'}
+        </span>
+      )}
+      {code && (
+        <a href={code} target="_blank" rel="noopener" class="tool-action-btn secondary">
+          <i class="fab fa-github"></i> Code
+        </a>
+      )}
+    </div>
+  </div>
+</div>

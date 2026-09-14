@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="600" height="280">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c111a" />
+      <stop offset="50%" stop-color="#121824" />
+      <stop offset="100%" stop-color="#162030" />
+    </linearGradient>
+
+    <!-- Node Glow Filter -->
+    <filter id="glowNode" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#38bdf8" flood-opacity="0.6" />
+    </filter>
+    <filter id="glowGen" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f59e0b" flood-opacity="0.7" />
+    </filter>
+    <filter id="shadowBox" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="280" fill="url(#bgGrad2)" />
+
+  <!-- Power Grid Coordinate Grid -->
+  <g stroke="#1e2838" stroke-width="1" opacity="0.4">
+    <line x1="0" y1="50" x2="600" y2="50" stroke-dasharray="3 5" />
+    <line x1="0" y1="110" x2="600" y2="110" stroke-dasharray="3 5" />
+    <line x1="0" y1="170" x2="600" y2="170" stroke-dasharray="3 5" />
+    <line x1="0" y1="230" x2="600" y2="230" stroke-dasharray="3 5" />
+    <line x1="80" y1="0" x2="80" y2="280" stroke-dasharray="3 5" />
+    <line x1="180" y1="0" x2="180" y2="280" stroke-dasharray="3 5" />
+    <line x1="280" y1="0" x2="280" y2="280" stroke-dasharray="3 5" />
+    <line x1="380" y1="0" x2="380" y2="280" stroke-dasharray="3 5" />
+    <line x1="480" y1="0" x2="480" y2="280" stroke-dasharray="3 5" />
+  </g>
+
+  <!-- Left: Interconnected Power Grid Topology / Transmission Network -->
+  <g transform="translate(45, 30)">
+    <!-- Convex Flexibility Polyhedron / Feasible Region Background -->
+    <polygon points="120,40 210,65 240,165 150,205 70,160 60,80" 
+             fill="#38bdf8" fill-opacity="0.06" stroke="#38bdf8" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 3" />
+
+    <!-- Transmission Lines -->
+    <line x1="70" y1="80" x2="190" y2="60" stroke="#334155" stroke-width="3" />
+    <line x1="70" y1="80" x2="120" y2="170" stroke="#334155" stroke-width="3" />
+    <line x1="190" y1="60" x2="240" y2="140" stroke="#334155" stroke-width="3" />
+    <line x1="120" y1="170" x2="240" y2="140" stroke="#334155" stroke-width="3" />
+    <line x1="120" y1="170" x2="180" y2="210" stroke="#334155" stroke-width="3" />
+    <line x1="240" y1="140" x2="180" y2="210" stroke="#334155" stroke-width="3" />
+
+    <!-- Active Power Flow Pulses (Colored Overlay Lines) -->
+    <line x1="70" y1="80" x2="190" y2="60" stroke="#7b9cb8" stroke-width="1.8" stroke-dasharray="6 8" />
+    <line x1="70" y1="80" x2="120" y2="170" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="6 8" />
+    <line x1="190" y1="60" x2="240" y2="140" stroke="#7b9cb8" stroke-width="1.8" stroke-dasharray="6 8" />
+
+    <!-- Bus 1 (Generator / Slack Bus) -->
+    <circle cx="70" cy="80" r="14" fill="#1e293b" stroke="#f59e0b" stroke-width="2.5" filter="url(#glowGen)" />
+    <text x="70" y="84" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#fef08a" text-anchor="middle">G1</text>
+    <text x="70" y="58" font-family="sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">Bus 1</text>
+
+    <!-- Bus 2 (Generator 2) -->
+    <circle cx="190" cy="60" r="14" fill="#1e293b" stroke="#f59e0b" stroke-width="2.5" filter="url(#glowGen)" />
+    <text x="190" y="64" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#fef08a" text-anchor="middle">G2</text>
+    <text x="190" y="38" font-family="sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">Bus 2</text>
+
+    <!-- Bus 3 (Load / TSO-DSO Interface) -->
+    <circle cx="120" cy="170" r="13" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5" filter="url(#glowNode)" />
+    <text x="120" y="174" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#7dd3fc" text-anchor="middle">L1</text>
+    <text x="120" y="196" font-family="sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">TSO-DSO</text>
+
+    <!-- Bus 4 (Load 2) -->
+    <circle cx="240" cy="140" r="13" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5" filter="url(#glowNode)" />
+    <text x="240" y="144" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#7dd3fc" text-anchor="middle">L2</text>
+    <text x="240" y="166" font-family="sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle">Bus 4</text>
+
+    <!-- Bus 5 (Storage / Battery Node) -->
+    <circle cx="180" cy="210" r="12" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="180" y="214" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="bold" fill="#c4b5fd" text-anchor="middle">BESS</text>
+  </g>
+
+  <!-- Right: Mathematical Formulation & Python / Julia Optimization Terminal -->
+  <g transform="translate(345, 36)" filter="url(#shadowBox)">
+    <!-- Terminal Window -->
+    <rect width="215" height="208" rx="8" fill="#111722" stroke="#253043" stroke-width="1.5" />
+    
+    <!-- Titlebar -->
+    <path d="M 0 8 Q 0 0 8 0 L 207 0 Q 215 0 215 8 L 215 28 L 0 28 Z" fill="#182130" />
+    <circle cx="14" cy="14" r="3.5" fill="#e05252" opacity="0.8" />
+    <circle cx="24" cy="14" r="3.5" fill="#e5c07b" opacity="0.8" />
+    <circle cx="34" cy="14" r="3.5" fill="#98c379" opacity="0.8" />
+    <text x="50" y="18" font-family="'JetBrains Mono', monospace" font-size="9" fill="#94a3b8">power_opt.py</text>
+
+    <!-- Formulation Content -->
+    <g font-family="'JetBrains Mono', monospace" font-size="9.5" xml:space="preserve">
+      <!-- Objective -->
+      <text x="14" y="52" fill="#7b9cb8"># Objective function</text>
+      <text x="14" y="70" fill="#c678dd">min</text>
+      <text x="38" y="70" fill="#e5c07b">∑</text>
+      <text x="50" y="70" fill="#61afef">C_i</text>
+      <text x="68" y="70" fill="#cbd5e1">(P_g,i) + VOLL</text>
+
+      <!-- Constraints -->
+      <text x="14" y="98" fill="#7b9cb8"># Physical Grid Limits</text>
+      <text x="14" y="116" fill="#e06c75">s.t.</text>
+      <text x="44" y="116" fill="#cbd5e1">B·θ = P_g - P_d</text>
+
+      <!-- Flow Bounds -->
+      <text x="44" y="136" fill="#cbd5e1">-F_max ≤ f_ij ≤ F_max</text>
+      <text x="44" y="156" fill="#cbd5e1">P_min ≤ P_g ≤ P_max</text>
+
+      <!-- Solver Status -->
+      <text x="14" y="184" fill="#98c379">✓ Optimal (Gurobi / HiGHS)</text>
+    </g>
+
+    <!-- Status Badge -->
+    <g transform="translate(14, 188)">
+      <rect width="187" height="1" fill="#253043" />
+    </g>
+  </g>
+</svg>
+

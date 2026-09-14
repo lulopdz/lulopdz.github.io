@@ -1,0 +1,83 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  authors: string;
+  venue: string;
+  year: number;
+  link?: string;
+  linkLabel?: string;
+  bibtex?: string;
+  featured?: boolean;
+  type?: string;
+}
+
+const {
+  id,
+  title,
+  authors,
+  venue,
+  year,
+  link,
+  linkLabel = 'Paper',
+  bibtex,
+  featured = false,
+  type = 'conference'
+} = Astro.props;
+
+// Highlight author name
+function formatAuthors(authorsStr: string) {
+  return authorsStr.replace(
+    /(L\.\s*L[oó]pez|Luis\s*L[oó]pez(\s*D[ií]az)?)/g,
+    '<span class="author-me">$1</span>'
+  );
+}
+
+const formattedAuthors = formatAuthors(authors);
+const bibId = `bib-${id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+---
+
+<article class={`pub-item ${featured ? 'featured' : ''}`} data-year={year} data-featured={featured ? 'true' : 'false'}>
+  <div class="pub-header">
+    <h3 class="pub-title">
+      {link ? (
+        <a href={link} target="_blank" rel="noopener">
+          {title}
+        </a>
+      ) : (
+        <span>{title}</span>
+      )}
+    </h3>
+    {featured && (
+      <span class="badge-featured-paper">
+        <i class="fas fa-bookmark"></i> Selected
+      </span>
+    )}
+  </div>
+
+  <p class="pub-authors" set:html={formattedAuthors} />
+  <p class="pub-venue">{venue}</p>
+  
+  <div class="pub-links">
+    {link && (
+      <a href={link} target="_blank" rel="noopener" class="pub-badge">
+        <i class="fas fa-external-link-alt"></i> {linkLabel}
+      </a>
+    )}
+
+    {bibtex && (
+      <button class="pub-badge toggle-bib-btn" data-target={bibId}>
+        <i class="fas fa-quote-right"></i> BibTeX
+      </button>
+    )}
+  </div>
+
+  {bibtex && (
+    <div class="bibtex-block" id={bibId}>
+      <pre>{bibtex.trim()}</pre>
+      <button class="copy-bib-btn" data-target={bibId}>
+        <i class="far fa-copy"></i> Copy BibTeX
+      </button>
+    </div>
+  )}
+</article>

@@ -1,0 +1,218 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PaperCard from '../components/PaperCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPapers = await getCollection('papers');
+const papers = allPapers.sort((a, b) => {
+  if (b.data.year !== a.data.year) return b.data.year - a.data.year;
+  return a.data.order - b.data.order;
+});
+
+const featuredCount = papers.filter((p) => p.data.featured).length;
+
+// Group papers by year
+const papersByYear: Record<number, typeof papers> = {};
+papers.forEach((p) => {
+  const y = p.data.year;
+  if (!papersByYear[y]) papersByYear[y] = [];
+  papersByYear[y].push(p);
+});
+
+// Unique sorted years in descending order
+const uniqueYears = Object.keys(papersByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+const allProjects = await getCollection('projects');
+const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+// Calculate unique tool tags and counts for category filters
+const toolTagCounts: Record<string, number> = {};
+projects.forEach((p) => {
+  p.data.tags.forEach((tag) => {
+    toolTagCounts[tag] = (toolTagCounts[tag] || 0) + 1;
+  });
+});
+const uniqueToolTags = Object.keys(toolTagCounts).sort((a, b) => {
+  // Sort by count descending, then alphabetical
+  if (toolTagCounts[b] !== toolTagCounts[a]) return toolTagCounts[b] - toolTagCounts[a];
+  return a.localeCompare(b);
+});
+
+const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\in \\mathbb{R}^2 \\;\\middle|\\; \\exists (p, q, v) \\in \\mathcal{F} \\;\\text{s.t.}\\; f(p, q, v) = 0, \\; g(p, q, v) \\le 0 \\right\\}$$`;
+---
+
+<Layout>
+  <!-- ====================================================================
+       TAB 1: ABOUT
+       ==================================================================== -->
+  <div class="tab-pane active" id="tab-about">
+    <div class="about-block">
+      <p>
+        Hey there! I'm <strong>Luis</strong>, a PhD candidate in power and energy systems planning at 
+        <a href="https://carleton.ca/" target="_blank" rel="noopener" class="org-badge"><i class="fas fa-university"></i> Carleton University</a> 
+        in Canada, working as a researcher at the 
+        <a href="https://carleton.ca/apex/" target="_blank" rel="noopener" class="org-badge"><i class="fas fa-bolt"></i> Apex Lab</a>.
+      </p>
+      <p>
+        I've always had a passion for academia and research, which began during my bachelor's degree in Electrical Engineering at 
+        <a href="https://www.uninorte.edu.co/" target="_blank" rel="noopener" class="org-badge"><i class="fas fa-graduation-cap"></i> Universidad del Norte</a> 
+        in Colombia, my home country, and carried through my master's degree. In parallel with academic research, I have engaged in consulting and industry engineering projects, developing practical skills in modern electricity markets, regulatory compliance, and grid operations.
+      </p>
+
+      <!--
+      <h3 class="sub-heading"><i class="fas fa-atom"></i> Research Interests</h3>
+      <p>
+        My research is focused on addressing structural challenges in modern power and energy systems through optimization:
+      </p>
+
+      <ul class="research-list">
+        <li><strong>TSO-DSO Coordination &amp; Flexibility:</strong> Characterizing multi-period feasible operating regions to coordinate transmission and distribution system operators.</li>
+        <li><strong>Distribution Grid Optimization:</strong> Optimal power flow (OPF), optimal capacity investment, and transportation electrification modeling.</li>
+      </ul>
+
+      <div class="math-box">
+        <p><strong>Mathematical Formulation:</strong> TSO-DSO Flexibility Region Definition</p>
+        <div class="math-display" set:html={mathFormula}></div>
+      </div>
+      -->
+
+      <!-- Espaciador flexible para empujar el resto del contenido al fondo -->
+      <div class="about-spacer"></div>
+
+      <p class="about-bottom-note">
+        Want to know more? Check out my <a href="https://drive.google.com/file/d/1oxaWiwHdFRUlVuHgFCD375MAZuKGAYDd/view?usp=drive_link" target="_blank" rel="noopener"><strong>Resume</strong></a> for a quick overview, or explore my <a href="https://drive.google.com/file/d/1zNwCbKcJ81FQDHWTxkNmvkMf4N3kPkV4/view" target="_blank" rel="noopener"><strong>Extended CV</strong></a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       TAB 2: PAPERS
+       ==================================================================== -->
+  <div class="tab-pane" id="tab-papers">
+    <!-- Year & Featured Filters Bar -->
+    <div class="papers-controls">
+      <div class="year-filters" id="year-filters">
+        <button class="year-pill featured-pill active" data-year-filter="featured">
+          <i class="fas fa-bookmark star-icon"></i> Selected <span class="pill-count">({featuredCount})</span>
+        </button>
+        <button class="year-pill" data-year-filter="all">
+          All <span class="pill-count">({papers.length})</span>
+        </button>
+        {uniqueYears.map((year) => (
+          <button class="year-pill" data-year-filter={year}>
+            {year} <span class="pill-count">({papersByYear[year].length})</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Timeline Grouped by Year -->
+    <div class="timeline-container" id="timeline-container">
+      {uniqueYears.map((year) => (
+        <section class="year-group" data-year-group={year}>
+          <div class="year-sticky-header">
+            <h3 class="year-number">{year}</h3>
+            <span class="year-count-badge">
+              {papersByYear[year].length} {papersByYear[year].length === 1 ? 'publication' : 'publications'}
+            </span>
+            <div class="year-line"></div>
+          </div>
+
+          <div class="pub-list">
+            {papersByYear[year].map((paper) => (
+              <PaperCard
+                id={paper.slug}
+                title={paper.data.title}
+                authors={paper.data.authors}
+                venue={paper.data.venue}
+                year={paper.data.year}
+                link={paper.data.link}
+                linkLabel={paper.data.linkLabel}
+                bibtex={paper.data.bibtex}
+                featured={paper.data.featured}
+                type={paper.data.type}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       TAB 3: TOOLS
+       ==================================================================== -->
+  <div class="tab-pane" id="tab-tools">
+    <!-- Tools Category Filter Bar -->
+    <div class="tools-controls">
+      <div class="tool-filters" id="tool-filters">
+        <button class="tool-pill active" data-tool-filter="all">
+          All <span class="pill-count">({projects.length})</span>
+        </button>
+        {uniqueToolTags.map((tag) => (
+          <button class="tool-pill" data-tool-filter={tag.toLowerCase()}>
+            {tag} <span class="pill-count">({toolTagCounts[tag]})</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="tools-grid">
+      {projects.map((tool) => (
+        <ProjectCard
+          title={tool.data.title}
+          description={tool.data.description}
+          image={tool.data.image}
+          featured={tool.data.featured}
+          inProgress={tool.data.inProgress}
+          statusBadge={tool.data.statusBadge}
+          link={tool.data.link}
+          linkLabel={tool.data.linkLabel}
+          code={tool.data.code}
+          tags={tool.data.tags}
+        />
+      ))}
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       TAB 4: CONTACT
+       ==================================================================== -->
+  <div class="tab-pane" id="tab-contact">
+    <div class="about-block">
+      <p>
+        I am always open to collaborating, discussing new ideas, or exchanging research thoughts. Feel free to shoot me an email, and we can schedule a call to chat over a cup of coffee!
+      </p>
+
+      <div class="contact-grid">
+        <a href="mailto:lulopdz@gmail.com" class="contact-card">
+          <div class="contact-icon"><i class="fas fa-paper-plane"></i></div>
+          <div>
+            <span class="contact-label">Personal Email</span>
+            <span class="contact-value">lulopdz@gmail.com</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/lulopdz" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon"><i class="fab fa-github"></i></div>
+          <div>
+            <span class="contact-label">GitHub</span>
+            <span class="contact-value">@lulopdz</span>
+          </div>
+        </a>
+
+        <a href="https://scholar.google.com/citations?user=Lg3HTnMAAAAJ&hl=en" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon"><i class="ai ai-google-scholar"></i></div>
+          <div>
+            <span class="contact-label">Google Scholar</span>
+            <span class="contact-value">Luis Lopez Diaz</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
+

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgSlate" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f2b46" />
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect width="200" height="200" rx="46" fill="url(#bgSlate)" />
+
+  <!-- Subtle Inner Border -->
+  <rect x="2" y="2" width="196" height="196" rx="44" fill="none" stroke="rgba(56, 189, 248, 0.2)" stroke-width="2" />
+
+  <!-- Grid Graph / Optimization Network Lines -->
+  <g stroke="rgba(56, 189, 248, 0.4)" stroke-width="2.5" stroke-dasharray="4 3">
+    <line x1="55" y1="75" x2="100" y2="45" />
+    <line x1="100" y1="45" x2="145" y2="75" />
+    <line x1="145" y1="75" x2="130" y2="130" />
+    <line x1="130" y1="130" x2="70" y2="130" />
+    <line x1="70" y1="130" x2="55" y2="75" />
+    <line x1="100" y1="45" x2="100" y2="105" />
+    <line x1="55" y1="75" x2="100" y2="105" />
+    <line x1="145" y1="75" x2="100" y2="105" />
+    <line x1="70" y1="130" x2="100" y2="105" />
+    <line x1="130" y1="130" x2="100" y2="105" />
+  </g>
+
+  <!-- Network Nodes -->
+  <circle cx="100" cy="45" r="7" fill="#38bdf8" filter="url(#glow)" />
+  <circle cx="55" cy="75" r="6" fill="#38bdf8" />
+  <circle cx="145" cy="75" r="6" fill="#38bdf8" />
+  <circle cx="70" cy="130" r="6" fill="#818cf8" />
+  <circle cx="130" cy="130" r="6" fill="#818cf8" />
+
+  <!-- Center Hub with Pulsing Energy Bolt -->
+  <circle cx="100" cy="105" r="14" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5" />
+  <path d="M101 97 L95 106 L100 106 L99 113 L105 104 L100 104 Z" fill="url(#amberGrad)" />
+
+  <!-- Terminal Badge / WIP Pill at Bottom -->
+  <g transform="translate(45, 152)">
+    <rect width="110" height="26" rx="13" fill="#090d16" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+    <!-- Blinking dot -->
+    <circle cx="14" cy="13" r="3.5" fill="#22c55e" />
+    <text x="60" y="17" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600" fill="#cbd5e1" text-anchor="middle">
+      building...
+    </text>
+  </g>
+</svg>
+

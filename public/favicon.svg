@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141821" />
+      <stop offset="100%" stop-color="#1c2230" />
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b455b" />
+      <stop offset="100%" stop-color="#232a39" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#f59e0b" flood-opacity="0.35" />
+    </filter>
+  </defs>
+  <!-- Background Rounded Squircle Tile -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="url(#borderGrad)" stroke-width="2" />
+  
+  <!-- Subtle Power Grid Node Connection Traces -->
+  <circle cx="16" cy="18" r="2.2" fill="#64748b" opacity="0.6" />
+  <circle cx="48" cy="46" r="2.2" fill="#64748b" opacity="0.6" />
+  <line x1="16" y1="18" x2="23" y2="25" stroke="#64748b" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+  <line x1="48" y1="46" x2="41" y2="39" stroke="#64748b" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+
+  <!-- Stylized Power Systems Lightning Bolt -->
+  <path d="M35 11 L19 33 H31 L26 53 L45 27 H33 Z" fill="url(#boltGrad)" filter="url(#glow)" stroke="#fef08a" stroke-width="0.75" stroke-linejoin="round" />
+</svg>
+

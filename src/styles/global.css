@@ -1,0 +1,1183 @@
+/* ==========================================================================
+   Two-Column Tabbed Academic Portfolio - Luis Lopez Diaz
+   Modern Geometric Minimalist Aesthetic: Inspired by Gilles Castel (castel.dev)
+   High-Speed Typography: Inter + Instant System Sans-Serif Fallbacks
+   ========================================================================== */
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: 'JetBrains Mono', 'Iosevka', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* Light Theme (Academic Paper & Slate) */
+  --bg-color: #f7f7f8;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f2f5;
+  --border-color: #e2e4e8;
+  --border-hover: #caced6;
+  --text-main: #333842;
+  --text-heading: #14171d;
+  --text-muted: #667080;
+  --accent: #3a5d7c;
+  --accent-light: #e8eef3;
+  --accent-hover: #2b4760;
+  --accent-gradient: linear-gradient(90deg, #3a5d7c, #567c9f);
+  --tag-bg: #f0f2f5;
+  --tag-text: #47515f;
+  --code-bg: #f3f4f6;
+  --code-border: #e2e4e8;
+  --quote-color: #5c6878;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme (Neutral Matte Charcoal & Slate - Gilles Castel / Nord Inspired) */
+  --bg-color: #121418;
+  --bg-surface: #181b20;
+  --bg-card: #181b20;
+  --bg-card-hover: #20242c;
+  --border-color: #272c35;
+  --border-hover: #3b4250;
+  --text-main: #c9ced6;
+  --text-heading: #f0f2f5;
+  --text-muted: #808896;
+  --accent: #7b9cb8;
+  --accent-light: rgba(123, 156, 184, 0.12);
+  --accent-hover: #98b6cf;
+  --accent-gradient: linear-gradient(90deg, #7b9cb8, #98b6cf);
+  --tag-bg: #1f232b;
+  --tag-text: #c2c8d2;
+  --code-bg: #14161c;
+  --code-border: #272c35;
+  --quote-color: #929ba8;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 10px -2px rgba(0, 0, 0, 0.45);
+}
+
+/* ==========================================================================
+   Reset & Base
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.65;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Main 2-Column Layout
+   ========================================================================== */
+.site-wrapper {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 3.75rem;
+  align-items: start;
+}
+
+/* ==========================================================================
+   Left Column: Fixed Sidebar (pbb.sh style)
+   ========================================================================== */
+.sidebar {
+  position: sticky;
+  top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar-container {
+  width: 220px;
+  height: 220px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--border-color);
+  background: var(--bg-card);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 150%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+
+.sidebar-name {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.sidebar-role {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.sidebar-affil {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-affil a {
+  color: inherit;
+  font-weight: 500;
+}
+
+.sidebar-affil a:hover {
+  color: var(--accent);
+}
+
+/* Social & Academic Icon Bar - Clean Minimalist (No bulky boxes) */
+.sidebar-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-bottom: 1.35rem;
+}
+
+.icon-link {
+  color: var(--text-muted);
+  font-size: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, transform 0.15s ease;
+  line-height: 1;
+}
+
+.icon-link:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.icon-link.cv-text {
+  font-size: 1.02rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+/* Location and Quote */
+.sidebar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.meta-location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sidebar-quote {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--quote-color);
+  margin-top: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.tex-logo sub {
+  text-transform: uppercase;
+  font-size: 0.82em;
+  vertical-align: -0.22em;
+  margin-left: -0.12em;
+  margin-right: -0.06em;
+  font-style: normal;
+}
+
+/* ==========================================================================
+   Right Column: Tabbed Content Area
+   ========================================================================== */
+.content-area {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 7rem);
+}
+
+/* Header with Top Tabs & Sleek Theme Toggle */
+.tabs-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.25rem;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.active-tab-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.tab-title-text {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.gradient-bar {
+  width: 44px;
+  height: 4px;
+  background: var(--accent-gradient);
+  border-radius: 2px;
+}
+
+.tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-heading);
+}
+
+.tab-btn.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Clean Floating Moon Icon Toggle */
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 6px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--accent);
+  transform: rotate(15deg);
+}
+
+/* ==========================================================================
+   Tab Panes (Show/Hide with subtle fade)
+   ========================================================================== */
+.tab-pane {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.tab-pane.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  animation: fadeIn 0.18s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   About Section & Organization Badges (pbb.sh style)
+   ========================================================================== */
+.about-block {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.about-spacer {
+  flex: 1;
+  min-height: 4rem;
+}
+
+.org-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  background-color: var(--tag-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.org-badge:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.org-badge i {
+  color: var(--accent);
+  font-size: 0.82rem;
+}
+
+.sub-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.research-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.research-list li {
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.research-list li strong {
+  color: var(--accent);
+}
+
+.research-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0.3rem;
+  color: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+/* Math Callout Box */
+.math-box {
+  background-color: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  border-top: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.1rem 1.35rem;
+  margin: 0.5rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.math-box p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.math-display {
+  overflow-x: auto;
+  padding: 0.25rem 0;
+}
+
+/* ==========================================================================
+   Publications List
+   ========================================================================== */
+.pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pub-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem 1.15rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease;
+}
+
+.pub-item:hover {
+  border-color: var(--border-hover);
+}
+
+.pub-title {
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
+}
+
+.pub-authors {
+  font-size: 0.88rem;
+  color: var(--text-main);
+  margin-bottom: 0.15rem;
+  line-height: 1.45;
+}
+
+.pub-authors .author-me {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.pub-venue {
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  line-height: 1.45;
+}
+
+.pub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.pub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--tag-bg);
+  color: var(--text-heading);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pub-badge:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.bibtex-block {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.bibtex-block.open {
+  display: block;
+}
+
+.bibtex-block pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  line-height: 1.45;
+}
+
+.copy-bib-btn {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-heading);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.copy-bib-btn:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* ==========================================================================
+   Tools Filter Controls (Category Pills)
+   ========================================================================== */
+.tools-controls {
+  margin-bottom: 1.75rem;
+}
+
+.tool-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tool-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tool-pill:hover {
+  border-color: var(--accent);
+  color: var(--text-heading);
+  transform: translateY(-1px);
+}
+
+.tool-pill.active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .tool-pill.active {
+  color: #121418;
+}
+
+.tool-pill .pill-count {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   Tools Grid & Compact Cards (Pingbang Hu / pbb.sh Squircle Approach)
+   ========================================================================== */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.tool-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.tool-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.tool-card.in-progress {
+  border-style: dashed;
+}
+
+/* Full-Width Top Banner / Header Graphic */
+.tool-banner-wrapper {
+  width: 100%;
+  height: 145px;
+  overflow: hidden;
+  background: var(--code-bg);
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.tool-banner-link,
+.tool-banner-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tool-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tool-card:hover .tool-banner-img {
+  transform: scale(1.04);
+}
+
+/* Content Container below Banner */
+.tool-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.tool-body {
+  flex: 1;
+}
+
+.tool-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.35;
+  margin-bottom: 0.45rem;
+  text-align: left;
+}
+
+.tool-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.tool-title a:hover {
+  color: var(--accent);
+}
+
+.tool-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.65rem;
+}
+
+.tool-tag {
+  font-size: 0.7rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  padding: 0.12rem 0.5rem;
+  border-radius: 5px;
+  background: var(--tag-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.tool-tag.tag-latex {
+  color: #c084fc;
+  background: rgba(192, 132, 252, 0.1);
+  border-color: rgba(192, 132, 252, 0.25);
+}
+
+.tool-tag.tag-overleaf {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.25);
+}
+
+.tool-tag.tag-optimization {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.tool-tag.tag-code {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.tool-tag.tag-powersystems {
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.1);
+  border-color: rgba(129, 140, 248, 0.25);
+}
+
+.tool-tag.tag-template {
+  color: #a78bfa;
+  background: rgba(167, 139, 250, 0.1);
+  border-color: rgba(167, 139, 250, 0.25);
+}
+
+.tool-desc {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-main);
+  margin-bottom: 0.95rem;
+}
+
+.tool-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.tool-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.32rem 0.75rem;
+  border-radius: 6px;
+  background-color: var(--accent);
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.tool-action-btn:hover {
+  background-color: var(--accent-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.tool-action-btn.secondary {
+  background-color: var(--tag-bg);
+  color: var(--text-heading);
+  border: 1px solid var(--border-color);
+}
+
+.tool-action-btn.secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tool-wip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--tag-bg);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+}
+
+/* ==========================================================================
+   Contact Pane
+   ========================================================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.contact-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.15s ease;
+  color: var(--text-heading);
+}
+
+.contact-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--tag-bg);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.contact-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive: Tablet & Mobile
+   ========================================================================== */
+@media (max-width: 860px) {
+  .site-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem 1.25rem;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .avatar-container {
+    width: 200px;
+    height: 135px;
+    border-radius: 16px;
+  }
+
+  .tabs-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tabs-nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+}
+
+/* ==========================================================================
+   Papers Filter Controls (Year & Featured Pills)
+   ========================================================================== */
+.papers-controls {
+  margin-bottom: 2.25rem;
+}
+
+.year-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.year-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.38rem 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.year-pill:hover {
+  border-color: var(--accent);
+  color: var(--text-heading);
+  transform: translateY(-1px);
+}
+
+.year-pill.active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .year-pill.active {
+  color: #121418;
+}
+
+.year-pill .pill-count {
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+/* Featured Pill Special Styling (Refined Academic Purple) */
+.year-pill.featured-pill {
+  border-color: rgba(107, 70, 148, 0.28);
+  color: #6b4694;
+}
+
+[data-theme="dark"] .year-pill.featured-pill {
+  border-color: rgba(191, 163, 224, 0.26);
+  color: #bfa3e0;
+}
+
+.year-pill.featured-pill .star-icon {
+  color: #7c52a9;
+  font-size: 0.78rem;
+}
+
+[data-theme="dark"] .year-pill.featured-pill .star-icon {
+  color: #bfa3e0;
+}
+
+.year-pill.featured-pill:hover {
+  border-color: rgba(107, 70, 148, 0.55);
+  background-color: rgba(107, 70, 148, 0.08);
+  color: #533377;
+}
+
+[data-theme="dark"] .year-pill.featured-pill:hover {
+  border-color: rgba(191, 163, 224, 0.5);
+  background-color: rgba(191, 163, 224, 0.10);
+  color: #f3ecfa;
+}
+
+.year-pill.featured-pill.active {
+  background-color: #f3eef8;
+  border-color: rgba(107, 70, 148, 0.45);
+  color: #4a2c6d;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .year-pill.featured-pill.active {
+  background-color: #211e2b;
+  border-color: rgba(191, 163, 224, 0.45);
+  color: #f3ecfa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.year-pill.featured-pill.active .star-icon {
+  color: #6b4694;
+}
+
+[data-theme="dark"] .year-pill.featured-pill.active .star-icon {
+  color: #bfa3e0;
+}
+
+.year-pill.featured-pill.active .pill-count {
+  color: #6b4694;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .year-pill.featured-pill.active .pill-count {
+  color: #bfa3e0;
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   Year Timeline Grouping & Featured Paper Badge
+   ========================================================================== */
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.year-group {
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.2s ease;
+}
+
+.year-sticky-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.35rem;
+  padding-bottom: 0.35rem;
+}
+
+.year-number {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.year-count-badge {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  background: var(--tag-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  border-radius: 999px;
+}
+
+.year-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+/* Featured Paper Badge */
+.pub-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.badge-featured-paper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.18rem 0.55rem;
+  background-color: rgba(107, 70, 148, 0.08);
+  border: 1px solid rgba(107, 70, 148, 0.22);
+  border-radius: 6px;
+  color: #6b4694;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .badge-featured-paper {
+  background-color: rgba(191, 163, 224, 0.10);
+  border-color: rgba(191, 163, 224, 0.26);
+  color: #bfa3e0;
+}
+
+.badge-featured-paper i {
+  color: #7c52a9;
+  font-size: 0.7rem;
+}
+
+[data-theme="dark"] .badge-featured-paper i {
+  color: #bfa3e0;
+}
+

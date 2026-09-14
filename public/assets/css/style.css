@@ -1,0 +1,793 @@
+/* ==========================================================================
+   Two-Column Tabbed Academic Portfolio - Luis Lopez Diaz
+   High-Fidelity Style: Inspired by pbb.sh & xb00dx.github.io
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Iosevka', Menlo, Consolas, Monaco, monospace;
+
+  /* Light Theme */
+  --bg-color: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --text-main: #334155;
+  --text-heading: #0f172a;
+  --text-muted: #64748b;
+  --accent: #2563eb;
+  --accent-light: #dbeafe;
+  --accent-hover: #1d4ed8;
+  --accent-gradient: linear-gradient(90deg, #2563eb, #38bdf8);
+  --tag-bg: #f1f5f9;
+  --tag-text: #475569;
+  --code-bg: #f8fafc;
+  --code-border: #e2e8f0;
+  --quote-color: #7c3aed;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme (pbb.sh Charcoal / Slate palette) */
+  --bg-color: #0d1117;
+  --bg-surface: #161c26;
+  --bg-card: #161c26;
+  --bg-card-hover: #1c2432;
+  --border-color: #242e3f;
+  --border-hover: #36455e;
+  --text-main: #cbd5e1;
+  --text-heading: #f8fafc;
+  --text-muted: #8b99ad;
+  --accent: #38bdf8;
+  --accent-light: #1e293b;
+  --accent-hover: #7dd3fc;
+  --accent-gradient: linear-gradient(90deg, #38bdf8, #818cf8);
+  --tag-bg: #1c2432;
+  --tag-text: #cbd5e1;
+  --code-bg: #111722;
+  --code-border: #242e3f;
+  --quote-color: #a78bfa;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Reset & Base
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.65;
+  font-size: 16px;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Main 2-Column Layout
+   ========================================================================== */
+.site-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 4rem;
+  align-items: start;
+}
+
+/* ==========================================================================
+   Left Column: Fixed Sidebar (pbb.sh style)
+   ========================================================================== */
+.sidebar {
+  position: sticky;
+  top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar-container {
+  width: 180px;
+  height: 180px;
+  border-radius: 38px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--border-color);
+  background: var(--bg-card);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.sidebar-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.sidebar-role {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.sidebar-affil {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-affil a {
+  color: inherit;
+  font-weight: 500;
+}
+
+.sidebar-affil a:hover {
+  color: var(--accent);
+}
+
+/* Social & Academic Icon Bar - Clean Minimalist (No bulky boxes) */
+.sidebar-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.icon-link {
+  color: var(--text-muted);
+  font-size: 1.18rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, transform 0.15s ease;
+  line-height: 1;
+}
+
+.icon-link:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.icon-link.cv-text {
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+/* Location and Quote */
+.sidebar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.meta-location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sidebar-quote {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--quote-color);
+  margin-top: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+.tex-logo sub {
+  text-transform: uppercase;
+  font-size: 0.82em;
+  vertical-align: -0.22em;
+  margin-left: -0.12em;
+  margin-right: -0.06em;
+  font-style: normal;
+}
+
+/* ==========================================================================
+   Right Column: Tabbed Content Area
+   ========================================================================== */
+.content-area {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header with Top Tabs & Sleek Theme Toggle */
+.tabs-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.25rem;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.active-tab-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.tab-title-text {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.gradient-bar {
+  width: 44px;
+  height: 4px;
+  background: var(--accent-gradient);
+  border-radius: 2px;
+}
+
+.tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-heading);
+}
+
+.tab-btn.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Clean Floating Moon Icon Toggle */
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 6px;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--accent);
+  transform: rotate(15deg);
+}
+
+/* ==========================================================================
+   Tab Panes (Show/Hide with subtle fade)
+   ========================================================================== */
+.tab-pane {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.tab-pane.active {
+  display: block;
+  animation: fadeIn 0.18s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   About Section & Organization Badges (pbb.sh style)
+   ========================================================================== */
+.about-block {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.org-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  background-color: var(--tag-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.org-badge:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.org-badge i {
+  color: var(--accent);
+  font-size: 0.82rem;
+}
+
+.sub-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid var(--accent);
+}
+
+.research-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.research-list li {
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.research-list li strong {
+  color: var(--accent);
+}
+
+.research-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0.3rem;
+  color: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+/* Math Callout Box */
+.math-box {
+  background-color: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  border-top: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.1rem 1.35rem;
+  margin: 0.5rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.math-box p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.math-display {
+  overflow-x: auto;
+  padding: 0.25rem 0;
+}
+
+/* ==========================================================================
+   Publications List
+   ========================================================================== */
+.pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pub-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease;
+}
+
+.pub-item:hover {
+  border-color: var(--border-hover);
+}
+
+.pub-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.4;
+  margin-bottom: 0.35rem;
+}
+
+.pub-authors {
+  font-size: 0.92rem;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.pub-authors .author-me {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.pub-venue {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.pub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: var(--tag-bg);
+  color: var(--text-heading);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pub-badge:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.bibtex-block {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.bibtex-block.open {
+  display: block;
+}
+
+.bibtex-block pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  line-height: 1.45;
+}
+
+.copy-bib-btn {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-heading);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.copy-bib-btn:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* ==========================================================================
+   Projects / Tools Cards
+   ========================================================================== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.project-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.35rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.project-card.featured {
+  border-color: var(--accent);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.badge-featured {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--tag-bg);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-link-btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--tag-bg);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.12s ease;
+}
+
+.card-link-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tag-badge {
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   Contact Pane
+   ========================================================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.contact-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.15s ease;
+  color: var(--text-heading);
+}
+
+.contact-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--tag-bg);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.contact-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive: Tablet & Mobile
+   ========================================================================== */
+@media (max-width: 860px) {
+  .site-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem 1.25rem;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .avatar-container {
+    width: 140px;
+    height: 140px;
+    border-radius: 28px;
+  }
+
+  .tabs-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .tabs-nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+}

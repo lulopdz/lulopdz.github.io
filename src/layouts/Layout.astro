@@ -1,0 +1,352 @@
+---
+import Sidebar from '../components/Sidebar.astro';
+import TabsHeader from '../components/TabsHeader.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Luis Lopez Diaz | Carleton University",
+  description = "Luis Lopez Diaz - PhD Student in Power & Energy Systems Planning at Carleton University (Apex Lab)."
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="author" content="Luis Lopez Diaz" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" href="/favicon.svg" />
+  
+  <title>{title}</title>
+
+  <!-- Performance Preconnects & DNS Prefetch for Instant Font Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+  <!-- Fonts: Inter & JetBrains Mono (display=swap for zero-delay rendering) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Icons: FontAwesome & Academicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- KaTeX for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ]
+    });"></script>
+
+  <!-- Immediate Theme Check (Prevents Flash) -->
+  <script is:inline>
+    (function() {
+      // Clean up any legacy preview palette
+      try {
+        localStorage.removeItem('site-palette');
+        document.documentElement.removeAttribute('data-palette');
+      } catch (e) {}
+
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="site-wrapper">
+    <Sidebar />
+
+    <main class="content-area">
+      <TabsHeader />
+
+      <slot />
+
+      <footer class="site-footer">
+        <p>&copy; {new Date().getFullYear()} Luis Lopez Diaz &bull; Carleton University &bull; Hosted on GitHub Pages</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Client-side Interactive Behaviors -->
+  <script is:inline>
+    function initInteractions() {
+      // Theme Toggle (SVG icons)
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const moonIcon = document.getElementById('theme-icon-moon');
+      const sunIcon = document.getElementById('theme-icon-sun');
+
+      function updateThemeUI(theme) {
+        if (!themeToggleBtn) return;
+        if (theme === 'dark') {
+          if (moonIcon) moonIcon.style.display = 'none';
+          if (sunIcon) sunIcon.style.display = 'block';
+          themeToggleBtn.setAttribute('aria-label', 'Switch to light mode');
+          themeToggleBtn.setAttribute('title', 'Switch to light mode');
+        } else {
+          if (moonIcon) moonIcon.style.display = 'block';
+          if (sunIcon) sunIcon.style.display = 'none';
+          themeToggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+          themeToggleBtn.setAttribute('title', 'Switch to dark mode');
+        }
+      }
+
+      const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      updateThemeUI(initialTheme);
+
+      if (themeToggleBtn && !themeToggleBtn.dataset.bound) {
+        themeToggleBtn.dataset.bound = 'true';
+        themeToggleBtn.addEventListener('click', () => {
+          const activeTheme = document.documentElement.getAttribute('data-theme');
+          const targetTheme = activeTheme === 'dark' ? 'light' : 'dark';
+
+          document.documentElement.setAttribute('data-theme', targetTheme);
+          localStorage.setItem('theme', targetTheme);
+          updateThemeUI(targetTheme);
+        });
+      }
+
+      // Tab Switching Logic (pbb.sh Header & Content)
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      const currentTabTitle = document.getElementById('current-tab-title');
+
+      const tabTitles = {
+        'tab-about': 'About',
+        'tab-papers': 'Papers',
+        'tab-tools': 'Tools',
+        'tab-projects': 'Tools',
+        'tab-contact': 'Contact'
+      };
+
+      function switchTab(targetTabId) {
+        const targetPane = document.getElementById(targetTabId);
+        if (!targetPane) return;
+
+        tabButtons.forEach(btn => {
+          if (btn.getAttribute('data-tab') === targetTabId) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        tabPanes.forEach(pane => {
+          if (pane.id === targetTabId) {
+            pane.classList.add('active');
+          } else {
+            pane.classList.remove('active');
+          }
+        });
+
+        if (currentTabTitle && tabTitles[targetTabId]) {
+          currentTabTitle.textContent = tabTitles[targetTabId];
+        }
+
+        const cleanHash = targetTabId.replace('tab-', '');
+        if (history.replaceState) {
+          history.replaceState(null, null, '#' + cleanHash);
+        } else {
+          location.hash = '#' + cleanHash;
+        }
+      }
+
+      tabButtons.forEach(btn => {
+        if (!btn.dataset.bound) {
+          btn.dataset.bound = 'true';
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetTabId = btn.getAttribute('data-tab');
+            switchTab(targetTabId);
+          });
+        }
+      });
+
+      function checkHash() {
+        if (window.location.hash) {
+          let hash = window.location.hash.replace('#', '');
+          if (hash === 'projects') hash = 'tools';
+          const tabFromHash = 'tab-' + hash;
+          if (document.getElementById(tabFromHash)) {
+            switchTab(tabFromHash);
+          }
+        }
+      }
+
+      // Check URL hash on load and on hashchange
+      checkHash();
+      window.addEventListener('hashchange', checkHash);
+
+      // BibTeX Toggle & Copy Functionality
+      const bibButtons = document.querySelectorAll('.toggle-bib-btn');
+
+      bibButtons.forEach(btn => {
+        if (!btn.dataset.bound) {
+          btn.dataset.bound = 'true';
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = btn.getAttribute('data-target');
+            const bibBlock = document.getElementById(targetId);
+            if (bibBlock) {
+              bibBlock.classList.toggle('open');
+            }
+          });
+        }
+      });
+
+      const copyButtons = document.querySelectorAll('.copy-bib-btn');
+
+      copyButtons.forEach(btn => {
+        if (!btn.dataset.bound) {
+          btn.dataset.bound = 'true';
+          btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            const bibBlock = document.getElementById(targetId);
+            if (bibBlock) {
+              const pre = bibBlock.querySelector('pre');
+              const text = pre ? pre.innerText : '';
+              navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                  btn.innerHTML = originalText;
+                }, 2000);
+              }).catch(err => {
+                console.error('Failed to copy BibTeX: ', err);
+              });
+            }
+          });
+        }
+      });
+
+      // ======================================================================
+      // Papers Year & Featured Filter
+      // ======================================================================
+      const yearPills = document.querySelectorAll('.year-pill');
+      const yearGroups = document.querySelectorAll('.year-group');
+
+      const initialActivePill = document.querySelector('.year-pill.active');
+      let currentFilter = initialActivePill ? (initialActivePill.getAttribute('data-year-filter') || 'featured') : 'featured';
+
+      function applyPaperFilters() {
+        yearGroups.forEach(group => {
+          const groupYear = group.getAttribute('data-year-group');
+          let groupVisibleCount = 0;
+          const groupPapers = group.querySelectorAll('.pub-item');
+
+          groupPapers.forEach(paper => {
+            const isFeatured = paper.getAttribute('data-featured') === 'true';
+            let matches = false;
+
+            if (currentFilter === 'all') {
+              matches = true;
+            } else if (currentFilter === 'featured') {
+              matches = isFeatured;
+            } else if (currentFilter === groupYear) {
+              matches = true;
+            }
+
+            if (matches) {
+              paper.style.display = 'block';
+              groupVisibleCount++;
+            } else {
+              paper.style.display = 'none';
+            }
+          });
+
+          if (groupVisibleCount > 0) {
+            group.style.display = 'flex';
+          } else {
+            group.style.display = 'none';
+          }
+        });
+      }
+
+      // Initialize filter on load
+      applyPaperFilters();
+
+      yearPills.forEach(pill => {
+        if (!pill.dataset.bound) {
+          pill.dataset.bound = 'true';
+          pill.addEventListener('click', (e) => {
+            e.preventDefault();
+            yearPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentFilter = pill.getAttribute('data-year-filter') || 'all';
+            applyPaperFilters();
+          });
+        }
+      });
+
+      // ======================================================================
+      // Tools Category Filter
+      // ======================================================================
+      const toolPills = document.querySelectorAll('.tool-pill');
+      const toolCards = document.querySelectorAll('.tool-card');
+
+      let currentToolFilter = 'all';
+
+      function applyToolFilters() {
+        toolCards.forEach(card => {
+          const cardTags = (card.getAttribute('data-tags') || '').split(',');
+          let matches = false;
+
+          if (currentToolFilter === 'all') {
+            matches = true;
+          } else if (cardTags.includes(currentToolFilter.toLowerCase())) {
+            matches = true;
+          }
+
+          if (matches) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      toolPills.forEach(pill => {
+        if (!pill.dataset.bound) {
+          pill.dataset.bound = 'true';
+          pill.addEventListener('click', (e) => {
+            e.preventDefault();
+            toolPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentToolFilter = pill.getAttribute('data-tool-filter') || 'all';
+            applyToolFilters();
+          });
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInteractions);
+    } else {
+      initInteractions();
+    }
+    document.addEventListener('astro:page-load', initInteractions);
+  </script>
+</body>
+</html>
+
