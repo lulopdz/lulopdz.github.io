@@ -203,13 +203,13 @@ order: 1
 ---
 ```
 
-**Course materials.** When `materialsDir` is set, the card shows a *Course Materials* button that opens `/teaching/<materialsDir>/`, a page generated at build time from the contents of `public/teaching/<materialsDir>/`. To publish material, drop the files (PDF, ZIP, notebooks, ...) in that folder and rebuild; no other change is needed. Files are listed in name order, so a numeric prefix controls the sequence, and the display title is derived from the file name (prefix stripped, dashes and underscores turned into spaces):
+**Course materials.** When `materialsDir` is set, the card shows a *Course Materials* button that opens `/teaching/<materialsDir>/`, a page generated at build time from the contents of `public/teaching/<materialsDir>/`. To publish material, drop the files (PDF, ZIP, notebooks, ...) in that folder and rebuild; no other change is needed. Files are listed in name order, so a numeric prefix controls the sequence. The display title is derived from the file name: the numeric prefix is dropped, `--` becomes an em dash, single `-`/`_` become spaces and the original capitalisation is kept.
 
 ```
 public/teaching/maae2300/
-├── 01-course-outline.pdf                 -> "Course outline"
-├── 02-tutorial-1-hydrostatics.pdf        -> "Tutorial 1 hydrostatics"
-└── 03-tutorial-2-bernoulli-equation.pdf  -> "Tutorial 2 bernoulli equation"
+├── 01-Introduction.pdf                                   -> "Introduction"
+├── 02-Tutorial-1--Fluid-Properties.pdf                   -> "Tutorial 1 — Fluid Properties"
+└── 03-Tutorial-2--Fluid-Statics.pdf                      -> "Tutorial 2 — Fluid Statics"
 ```
 
 ### Tools and projects — `src/content/projects/`

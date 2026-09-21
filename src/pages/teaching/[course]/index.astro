@@ -42,10 +42,16 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-// "03-bernoulli-equation.pdf" -> "Bernoulli equation"
+// "02-Tutorial-1--Bernoulli-Equation.pdf" -> "Tutorial 1 — Bernoulli Equation"
+// (numeric prefix dropped, "--" becomes an em dash, single "-"/"_" become spaces; case is kept)
 function titleFromFilename(name: string) {
   const base = name.replace(/\.[^.]+$/, '');
-  const cleaned = base.replace(/^\d+[-_.\s]*/, '').replace(/[-_]+/g, ' ').trim();
+  const cleaned = base
+    .replace(/^\d+[-_.\s]*/, '')
+    .replace(/--/g, ' — ')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
   return cleaned ? cleaned[0].toUpperCase() + cleaned.slice(1) : base;
 }
 
