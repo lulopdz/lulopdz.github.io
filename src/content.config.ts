@@ -1,7 +1,8 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const papers = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/papers' }),
   schema: z.object({
     title: z.string(),
     authors: z.string(),
@@ -17,10 +18,9 @@ const papers = defineCollection({
 });
 
 const projects = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
-    codeTitle: z.string().optional(),
     description: z.string(),
     image: z.string().optional(),
     featured: z.boolean().default(false),
@@ -28,9 +28,26 @@ const projects = defineCollection({
     statusBadge: z.string().optional(),
     link: z.string().optional(),
     linkLabel: z.string().default('Access'),
-    liveDemo: z.string().optional(),
     code: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    order: z.number().default(0),
+  }),
+});
+
+const teaching = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/teaching' }),
+  schema: z.object({
+    course: z.string(),
+    code: z.string(),
+    institution: z.string(),
+    institutionUrl: z.string().optional(),
+    role: z.string(),
+    term: z.string(),
+    year: z.number(),
+    current: z.boolean().default(false),
+    // Folder name under public/teaching/ whose files are listed at /teaching/<materialsDir>/
+    materialsDir: z.string().regex(/^[a-z0-9-]+$/).optional(),
+    materialsLabel: z.string().default('Course Materials'),
     order: z.number().default(0),
   }),
 });
@@ -38,4 +55,5 @@ const projects = defineCollection({
 export const collections = {
   papers,
   projects,
+  teaching,
 };

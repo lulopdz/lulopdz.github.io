@@ -1,0 +1,128 @@
+---
+// src/pages/teaching/[course]/index.astro
+// Course materials index. One page is generated per teaching entry that sets
+// `materialsDir`; it lists whatever files are in public/teaching/<materialsDir>/
+// at build time, so posting new material is just dropping a file in that folder.
+import fs from 'node:fs';
+import path from 'node:path';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ThemeToggle from '../../../components/ThemeToggle.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('teaching');
+  return entries
+    .filter((entry) => entry.data.materialsDir)
+    .map((entry) => ({ params: { course: entry.data.materialsDir }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { course, code, institution, institutionUrl, role, term, materialsDir, materialsLabel } = entry.data;
+
+// --- Read the materials folder ---------------------------------------------
+const publicUrl = `/teaching/${materialsDir}/`;
+const dir = path.join(process.cwd(), 'public', 'teaching', materialsDir!);
+
+const ICONS: Record<string, string> = {
+  pdf: 'fa-file-pdf',
+  zip: 'fa-file-zipper',
+  ipynb: 'fa-file-code',
+  py: 'fa-file-code',
+  m: 'fa-file-code',
+  jl: 'fa-file-code',
+  xlsx: 'fa-file-excel',
+  csv: 'fa-file-csv',
+  pptx: 'fa-file-powerpoint',
+  docx: 'fa-file-word',
+};
+
+function formatSize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+// "03-bernoulli-equation.pdf" -> "Bernoulli equation"
+function titleFromFilename(name: string) {
+  const base = name.replace(/\.[^.]+$/, '');
+  const cleaned = base.replace(/^\d+[-_.\s]*/, '').replace(/[-_]+/g, ' ').trim();
+  return cleaned ? cleaned[0].toUpperCase() + cleaned.slice(1) : base;
+}
+
+const files = fs.existsSync(dir)
+  ? fs
+      .readdirSync(dir, { withFileTypes: true })
+      .filter((d) => d.isFile() && !d.name.startsWith('.') && d.name !== 'index.html')
+      .map((d) => {
+        const ext = path.extname(d.name).slice(1).toLowerCase();
+        return {
+          name: d.name,
+          title: titleFromFilename(d.name),
+          url: publicUrl + encodeURIComponent(d.name),
+          ext: ext.toUpperCase(),
+          icon: ICONS[ext] ?? 'fa-file-lines',
+          size: formatSize(fs.statSync(path.join(dir, d.name)).size),
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+  : [];
+
+const pageTitle = `${code} ${materialsLabel} | Luis Lopez`;
+const pageDescription = `${materialsLabel} for ${code} ${course} (${institution}, ${term}).`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main class="materials-page">
+    <header class="materials-topbar">
+      <a href="/#teaching" class="back-link"><i class="fas fa-arrow-left"></i> Back to Teaching</a>
+      <ThemeToggle />
+    </header>
+
+    <div class="materials-title">
+      <div class="teaching-heading">
+        <span class="teaching-code">{code}</span>
+        <h1 class="materials-course">{course}</h1>
+      </div>
+      <p class="teaching-meta">
+        {institutionUrl ? (
+          <a href={institutionUrl} target="_blank" rel="noopener">{institution}</a>
+        ) : (
+          <span>{institution}</span>
+        )}
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span>{term}</span>
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span>{role}</span>
+      </p>
+    </div>
+
+    <div class="year-sticky-header">
+      <h2 class="materials-heading">{materialsLabel}</h2>
+      <span class="year-count-badge">{files.length} {files.length === 1 ? 'file' : 'files'}</span>
+      <div class="year-line"></div>
+    </div>
+
+    {files.length > 0 ? (
+      <ul class="materials-list">
+        {files.map((f) => (
+          <li>
+            <a href={f.url} class="material-item" target="_blank" rel="noopener">
+              <i class={`fas ${f.icon} material-icon`} aria-hidden="true"></i>
+              <span class="material-name">{f.title}</span>
+              <span class="material-meta">{f.ext} &middot; {f.size}</span>
+              <i class="fas fa-arrow-up-right-from-square material-open" aria-hidden="true"></i>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="materials-empty">
+        <i class="far fa-folder-open"></i> No materials have been posted yet. Check back soon.
+      </p>
+    )}
+
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} Luis Lopez &bull; Carleton University &bull; Hosted on GitHub Pages</p>
+    </footer>
+  </main>
+</BaseLayout>

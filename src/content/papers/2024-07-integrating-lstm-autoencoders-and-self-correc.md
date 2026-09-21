@@ -9,7 +9,7 @@ order: 7
 bibtex: |
   @inproceedings{lopez2024integrating,
     title={Integrating LSTM Autoencoders and Self-Correction for Enhanced IoT Time-Series Analysis},
-    author={Luis Lopez, Sasisekhar Govind, Hakim Ghazzai, Abdullah Kadri},
+    author={Luis Lopez and Sasisekhar Govind and Hakim Ghazzai and Abdullah Kadri},
     booktitle={2024 IEEE 30th International Conference on Telecommunications (ICT)},
     year={2024}
   }

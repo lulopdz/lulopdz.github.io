@@ -1,126 +1,308 @@
-# Personal Academic Website — Luis Lopez Diaz
+# lulopdz.github.io
 
-Fast personal academic portfolio for **Luis Lopez Diaz** (PhD Student in Power Systems, Apex Lab, Carleton University), powered by **Astro** and hosted on GitHub Pages: [https://lulopdz.github.io/](https://lulopdz.github.io/).
+[![Deploy to GitHub Pages](https://github.com/lulopdz/lulopdz.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/lulopdz/lulopdz.github.io/actions/workflows/deploy.yml)
+[![Built with Astro](https://img.shields.io/badge/Built%20with-Astro%205-BC52EE?logo=astro&logoColor=white)](https://astro.build)
+[![Hosted on GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-222?logo=github)](https://lulopdz.github.io)
+
+Source code for the personal academic website of **Luis Lopez**, PhD Candidate in power and energy systems planning at the [Apex Lab](https://carleton.ca/apex/), Carleton University.
+
+**Live site:** <https://lulopdz.github.io>
 
 ---
 
-## ⚡ Quick Start (Local Development)
+## Table of Contents
 
-To view and edit your site locally with instant live preview:
+- [About the Site](#about-the-site)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+- [Previewing Changes Locally](#previewing-changes-locally)
+- [Managing Content](#managing-content)
+- [Project Structure](#project-structure)
+- [Deployment](#deployment)
+- [License](#license)
+
+---
+
+## About the Site
+
+The website is a compact academic portfolio designed to present a research profile, a publication record, and a set of open tools in a fast, accessible and distraction-free format. It is organised into five sections:
+
+| Section | Purpose |
+| --- | --- |
+| **About** | Short biography, affiliations and links to the résumé and extended CV. |
+| **Papers** | Publication list grouped by year, with *Selected* / *All* / per-year filters and one-click BibTeX copy for every entry. |
+| **Teaching** | Teaching appointments grouped by year, each linking to a course-materials page generated from a folder of files. |
+| **Tools** | Open resources and software (e.g. a LaTeX thesis template), filterable by tag. |
+| **Contact** | Email, GitHub and Google Scholar links. |
+
+Key characteristics:
+
+- **Static and dependency-light.** The site is pre-rendered to plain HTML/CSS at build time; there is no client-side framework and no runtime data fetching. The only client-side JavaScript is a ~3 KB inlined module for tabs, theme and filters.
+- **Content as data.** Publications and tools live in Markdown files with typed YAML frontmatter, validated at build time with Zod schemas. Adding a paper is a matter of adding a file.
+- **Optimised images.** The profile photo is resized and converted to WebP at build time (`astro:assets`), with 1x/2x variants served through `srcset`.
+- **Light and dark themes**, with the preference persisted in `localStorage` and the system preference used as default.
+- **Deep-linkable sections** via URL hashes (`/#papers`, `/#teaching`, `/#tools`, `/#contact`).
+- **Automatic author highlighting** in publication entries.
+- **Search and social ready.** Canonical URL, Open Graph and Twitter Card metadata, schema.org `Person` structured data, sitemap and `robots.txt` are generated at build time.
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Notes |
+| --- | --- | --- |
+| Static site generator | [Astro](https://astro.build) 5.x | Static output, file-based build format. |
+| Content management | Astro Content Layer (`glob` loader) + [Zod](https://zod.dev) | Schemas defined in `src/content.config.ts`. |
+| Image optimisation | `astro:assets` (Sharp) | Build-time resize, WebP conversion and `srcset` generation. |
+| Templating | `.astro` components | No UI framework; zero JavaScript shipped by Astro itself. |
+| Styling | Vanilla CSS with custom properties | Single global stylesheet, "Nordic Slate" palette, light/dark tokens. |
+| Typography | [Inter](https://fonts.google.com/specimen/Inter), [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) | Loaded from Google Fonts. |
+| Icons | [Font Awesome](https://fontawesome.com) 6, [Academicons](https://jpswalsh.github.io/academicons/) | Loaded from cdnjs. |
+| Interactivity | Vanilla TypeScript (`src/scripts/interactions.ts`) | Bundled, minified and inlined by Astro; tab switching, theme toggle, filters, BibTeX copy. |
+| SEO | [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), JSON-LD | Sitemap index, Open Graph / Twitter Card tags in `BaseLayout.astro`; `Person` schema on the home page. |
+| CI/CD | [GitHub Actions](https://github.com/features/actions) | Builds and publishes to GitHub Pages on every push to `main`. |
+| Hosting | [GitHub Pages](https://pages.github.com) | Served from the `lulopdz.github.io` user site. |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js** 18.17.1 or newer (Node 20 LTS is used in CI and pinned in `.nvmrc`; `nvm use` picks it up automatically).
+- **npm** 9 or newer (bundled with Node).
+- **Git**.
+
+Verify your installation:
 
 ```bash
-# Install dependencies (only needed once)
-npm install
+node --version
+npm --version
+```
 
-# Start local development server with Hot Module Reload
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/lulopdz/lulopdz.github.io.git
+cd lulopdz.github.io
+
+# 2. Install dependencies (reproducible install from package-lock.json)
+npm ci
+```
+
+> If `npm ci` fails because the lockfile is out of sync, fall back to `npm install`.
+
+### Available Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Starts the development server at `http://localhost:4321` with hot module replacement. |
+| `npm run build` | Produces the optimised production build in `dist/`. |
+| `npm run preview` | Serves the contents of `dist/` locally, exactly as they will be deployed. |
+
+---
+
+## Previewing Changes Locally
+
+Always verify changes in the browser before committing. Two workflows are available depending on what you need.
+
+### 1. Live development (while editing)
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:4321](http://localhost:4321) in your browser. Whenever you edit or create a Markdown file, the browser updates automatically in real-time.
+Open <http://localhost:4321>. Every change to `.astro`, `.css` or Markdown files is reflected in the browser immediately without a manual reload. Use this mode for iterating on content and styling.
 
-To test the production build locally:
+To expose the dev server on your local network (e.g. to test on a phone):
+
+```bash
+npm run dev -- --host
+```
+
+### 2. Production preview (before pushing)
+
+The development server is not byte-for-byte identical to the deployed site. Before pushing to `main`, build the site and serve the actual output:
 
 ```bash
 npm run build
 npm run preview
 ```
 
+Open <http://localhost:4321> and confirm that:
+
+- all five tabs render and the URL hashes (`/#papers`, `/#teaching`, `/#tools`, `/#contact`) open the correct tab on load;
+- the theme toggle works in both directions and the choice persists after a reload;
+- images and icons load (no 404s in the browser console);
+- publication filters and the *BibTeX* copy button behave as expected;
+- the layout holds at narrow widths (use the browser's device toolbar).
+
+A build that fails locally will also fail in CI, so a successful `npm run build` is the minimum bar before committing.
+
+### 3. Commit and publish
+
+```bash
+git add .
+git commit -m "Describe the change"
+git push origin main
+```
+
+The GitHub Actions workflow builds and deploys automatically (see [Deployment](#deployment)).
+
 ---
 
-## 📝 How to Add & Edit Content
+## Managing Content
 
-All your content is cleanly separated into Markdown files with structured YAML frontmatter:
+All site content is stored as Markdown files with YAML frontmatter under `src/content/`. The frontmatter is validated against the schemas in [`src/content.config.ts`](src/content.config.ts); a build will fail with a descriptive error if a required field is missing or has the wrong type.
 
-### 1. Adding a New Paper / Publication
-Create a new `.md` file inside `src/content/papers/` (e.g. `src/content/papers/my-new-paper.md`):
+### Publications — `src/content/papers/`
+
+Create one file per publication. The file name is free-form but a `YYYY-NN-short-title.md` convention keeps the directory sorted.
 
 ```markdown
 ---
 title: "Title of the Publication"
-authors: "L. Lopez, Coauthor Name, and Another Coauthor"
-venue: "IEEE Transactions on Power Systems, 2024"
-year: 2024
-link: "https://doi.org/..."
-linkLabel: "IEEE Xplore"
-order: 1
-bibtex: |
-  @article{lopez2024title,
-    title={Title of the Publication},
-    author={Lopez, L. and Coauthor, N.},
-    journal={IEEE Transactions on Power Systems},
-    year={2024}
+authors: "Luis Lopez, Coauthor Name, Another Coauthor"
+venue: "IEEE Transactions on Power Systems"
+year: 2025
+link: "https://doi.org/..."       # optional
+linkLabel: "IEEE Xplore"          # optional, default: "Paper"
+featured: true                    # optional, shows under the "Selected" filter
+type: "journal"                   # optional: journal | conference | preprint | other
+order: 1                          # optional, sort order within the same year
+bibtex: |                         # optional, enables the BibTeX button
+  @article{lopez2025title,
+    title   = {Title of the Publication},
+    author  = {Lopez, Luis and Name, Coauthor},
+    journal = {IEEE Transactions on Power Systems},
+    year    = {2025}
   }
 ---
 ```
-*Note: Your name (`L. Lopez` or `Luis Lopez`) will automatically be bolded/highlighted in the author list.*
 
-### 2. Adding a New Project / Tool
-Create a new `.md` file inside `src/content/projects/` (e.g. `src/content/projects/my-new-tool.md`):
+Publications are sorted by `year` (descending) and then by `order` (ascending). The author name (`L. Lopez`, `Luis Lopez`, `Luis Lopez Diaz`) is highlighted automatically.
+
+### Teaching — `src/content/teaching/`
+
+One file per course appointment. Entries are grouped by `year` (newest first) and sorted by `order` within a year; `current: true` adds a live *Current* badge.
 
 ```markdown
 ---
-title: "Project Name"
-description: "Clear and concise summary of what this tool does."
-featured: true          # true places it at the top with a 'Live App' badge
-liveDemo: "https://..." # optional
-code: "https://..."     # optional
-tags:
-  - "Julia"
-  - "Power Systems"
-  - "Flexibility"
+course: "Fluid Mechanics I"
+code: "MAAE 2300"
+institution: "Carleton University"
+institutionUrl: "https://carleton.ca/mae/"   # optional
+role: "Teaching Assistant"
+term: "Fall 2026"
+year: 2026
+current: true                                # optional, default: false
+materialsDir: "maae2300"                     # optional, folder under public/teaching/
+materialsLabel: "Course Materials"           # optional, button text
 order: 1
 ---
 ```
 
-### 3. Editing Bio, Research Interests, or LaTeX Math
-The About tab is located in `src/pages/index.astro`. You can edit your bio text, update the affiliation badges, or change the KaTeX mathematical formulas directly.
+**Course materials.** When `materialsDir` is set, the card shows a *Course Materials* button that opens `/teaching/<materialsDir>/`, a page generated at build time from the contents of `public/teaching/<materialsDir>/`. To publish material, drop the files (PDF, ZIP, notebooks, ...) in that folder and rebuild; no other change is needed. Files are listed in name order, so a numeric prefix controls the sequence, and the display title is derived from the file name (prefix stripped, dashes and underscores turned into spaces):
+
+```
+public/teaching/maae2300/
+├── 01-course-outline.pdf                 -> "Course outline"
+├── 02-tutorial-1-hydrostatics.pdf        -> "Tutorial 1 hydrostatics"
+└── 03-tutorial-2-bernoulli-equation.pdf  -> "Tutorial 2 bernoulli equation"
+```
+
+### Tools and projects — `src/content/projects/`
+
+```markdown
+---
+title: "Tool Name"
+description: "One or two sentences describing what the tool does."
+image: "/assets/images/tools/banner.svg"  # optional, banner shown at the top of the card
+link: "https://..."                        # optional, primary action
+linkLabel: "Open on Overleaf"              # optional, default: "Access"
+code: "https://github.com/..."             # optional, adds a "Code" button
+featured: true                             # optional, highlights the card
+inProgress: false                          # optional, shows a status badge
+statusBadge: "Under Active Development"    # optional, text for the status badge
+tags: ["LaTeX", "Template"]                # used to build the tag filters
+order: 1
+---
+```
+
+### Biography, contact details and sidebar
+
+- Biography and contact cards: [`src/pages/index.astro`](src/pages/index.astro)
+- Sidebar (name, affiliation, social links): [`src/components/Sidebar.astro`](src/components/Sidebar.astro)
+- Profile photo: replace [`src/assets/profile.jpg`](src/assets/profile.jpg) with any reasonably large JPEG/PNG; Astro produces the optimised variants on build.
+- Résumé and CV: replace the PDFs in [`public/cv/`](public/cv/) keeping the same file names (`luis-lopez-resume.pdf`, `luis-lopez-cv.pdf`) so existing links stay valid.
+- Social preview card: [`public/og-image.jpg`](public/og-image.jpg) (1200×630) is referenced by the Open Graph and Twitter tags in `Layout.astro`.
+- Page metadata (title, description): [`src/layouts/Layout.astro`](src/layouts/Layout.astro)
+- Colours, typography and layout: [`src/styles/global.css`](src/styles/global.css)
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 .
 ├── .github/workflows/
-│   └── deploy.yml            # Automated GitHub Actions deployment
-├── public/
-│   └── assets/images/
-│       └── profile.jpg       # Profile picture (center-framed squircle avatar)
+│   └── deploy.yml              # CI: build with Astro and deploy to GitHub Pages
+├── public/                     # Static assets copied verbatim to the build output
+│   ├── assets/images/tools/    # SVG banners for the Tools cards
+│   ├── cv/                     # Résumé and extended CV (PDF)
+│   ├── teaching/<course>/      # Course materials, listed automatically at /teaching/<course>/
+│   ├── apple-touch-icon.png    # 180×180 icon for iOS home screens
+│   ├── favicon.svg             # Primary icon (+ 32/96 px PNG fallbacks)
+│   ├── og-image.jpg            # 1200×630 social preview card
+│   └── robots.txt
 ├── src/
-│   ├── content/
-│   │   ├── config.ts         # Zod schemas for content collections
-│   │   ├── papers/           # Individual Markdown files for publications
-│   │   └── projects/         # Individual Markdown files for tools & projects
+│   ├── assets/
+│   │   └── profile.jpg         # Source photo, optimised by astro:assets at build time
 │   ├── components/
-│   │   ├── Sidebar.astro     # Fixed two-column sidebar with photo & icons
-│   │   ├── TabsHeader.astro  # Header with section title, tab buttons & theme toggle
-│   │   ├── PaperCard.astro   # Paper card with interactive BibTeX copy
-│   │   └── ProjectCard.astro # Project card with live demo & GitHub tags
+│   │   ├── Sidebar.astro       # Profile card with photo, affiliation and social links
+│   │   ├── TabsHeader.astro    # Section title, tab navigation and theme toggle
+│   │   ├── PaperCard.astro     # Publication entry with BibTeX toggle/copy
+│   │   ├── TeachingCard.astro  # Course appointment card (role, term, materials link)
+│   │   ├── ThemeToggle.astro   # Light/dark switch shared by all pages
+│   │   └── ProjectCard.astro   # Tool card with banner, tags and actions
+│   ├── content/
+│   │   ├── papers/             # One Markdown file per publication
+│   │   ├── projects/           # One Markdown file per tool/project
+│   │   └── teaching/           # One Markdown file per course appointment
+│   ├── content.config.ts       # Collection loaders and Zod schemas
 │   ├── layouts/
-│   │   └── Layout.astro      # Base HTML layout, KaTeX math defer, dark/light theme
+│   │   ├── BaseLayout.astro    # HTML shell: metadata, SEO tags, fonts, theme bootstrap
+│   │   └── Layout.astro        # Home-page chrome (sidebar + tabs) on top of BaseLayout
 │   ├── pages/
-│   │   └── index.astro       # Main single-page interactive tabbed interface
+│   │   ├── index.astro         # The main page: About, Papers, Teaching, Tools, Contact
+│   │   └── teaching/[course]/  # Generated course-materials index pages
+│   ├── scripts/
+│   │   └── interactions.ts     # Client-side behaviour (tabs, theme, filters, BibTeX)
 │   └── styles/
-│       └── global.css        # Modern typography, color palettes, and responsive grid
-├── astro.config.mjs          # Astro configuration (base '/', site URL)
-└── package.json              # Project scripts and dependencies
+│       └── global.css          # Design tokens, layout and component styles
+├── .nvmrc                      # Node version used locally and in CI
+├── astro.config.mjs            # Site URL, base path, sitemap integration and build format
+├── package.json
+└── package-lock.json
 ```
 
 ---
 
-## 🚀 Deployment to GitHub Pages
+## Deployment
 
-The repository includes a continuous deployment workflow via **GitHub Actions** (`.github/workflows/deploy.yml`).
+Deployment is fully automated by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
 
-Whenever you push to the `main` branch:
+1. Every push to `main` (or a manual *Run workflow* trigger) checks out the repository on `ubuntu-latest` with the Node version from `.nvmrc`.
+2. Dependencies are installed with `npm ci` (cached between runs) and `astro build` is executed. The `--site` and `--base` flags are injected from `actions/configure-pages`, so the build adapts automatically if the repository is ever served from a sub-path.
+3. The `dist/` directory is uploaded as a Pages artifact and published with `actions/deploy-pages`.
 
-```bash
-git add .
-git commit -m "Add new paper"
-git push origin main
-```
+The workflow status and the URL of the last deployment are visible in the repository's **Actions** tab.
 
-GitHub Actions automatically builds the static site and deploys it to `https://lulopdz.github.io/`.
+**One-time repository setup:** in *Settings → Pages → Build and deployment*, set **Source** to **GitHub Actions**.
 
-> **First-time setup in GitHub**:
-> Go to your repository on GitHub -> **Settings** -> **Pages** -> under **Build and deployment > Source**, select **GitHub Actions**.
+---
+
+## License
+
+The source code of this website may be used as a reference or starting point for your own academic site. All written content, publication data and images are © Luis Lopez and are not covered by that permission. Please replace personal content before reusing the template.

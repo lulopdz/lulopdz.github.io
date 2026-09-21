@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PaperCard from '../components/PaperCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import TeachingCard from '../components/TeachingCard.astro';
 import { getCollection } from 'astro:content';
 
 const allPapers = await getCollection('papers');
@@ -22,6 +23,21 @@ papers.forEach((p) => {
 
 // Unique sorted years in descending order
 const uniqueYears = Object.keys(papersByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+// Teaching: newest year first, then by explicit order
+const allTeaching = await getCollection('teaching');
+const teaching = allTeaching.sort((a, b) => {
+  if (b.data.year !== a.data.year) return b.data.year - a.data.year;
+  return a.data.order - b.data.order;
+});
+
+const teachingByYear: Record<number, typeof teaching> = {};
+teaching.forEach((t) => {
+  (teachingByYear[t.data.year] ??= []).push(t);
+});
+const teachingYears = Object.keys(teachingByYear)
   .map(Number)
   .sort((a, b) => b - a);
 
@@ -62,7 +78,7 @@ const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\i
         in Colombia, my home country, and carried through my master's degree. In parallel with academic research, I have engaged in consulting and industry engineering projects, developing practical skills in modern electricity markets, regulatory compliance, and grid operations.
       </p>
 
-      <!--
+      {/*
       <h3 class="sub-heading"><i class="fas fa-atom"></i> Research Interests</h3>
       <p>
         My research is focused on addressing structural challenges in modern power and energy systems through optimization:
@@ -77,13 +93,13 @@ const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\i
         <p><strong>Mathematical Formulation:</strong> TSO-DSO Flexibility Region Definition</p>
         <div class="math-display" set:html={mathFormula}></div>
       </div>
-      -->
+      */}
 
       <!-- Espaciador flexible para empujar el resto del contenido al fondo -->
       <div class="about-spacer"></div>
 
       <p class="about-bottom-note">
-        Want to know more? Check out my <a href="https://drive.google.com/file/d/1oxaWiwHdFRUlVuHgFCD375MAZuKGAYDd/view?usp=drive_link" target="_blank" rel="noopener"><strong>Resume</strong></a> for a quick overview, or explore my <a href="https://drive.google.com/file/d/1zNwCbKcJ81FQDHWTxkNmvkMf4N3kPkV4/view" target="_blank" rel="noopener"><strong>Extended CV</strong></a>.
+        Want to know more? Check out my <a href="/cv/luis-lopez-resume.pdf" target="_blank" rel="noopener"><strong>Resume</strong></a> for a quick overview, or explore my <a href="/cv/luis-lopez-cv.pdf" target="_blank" rel="noopener"><strong>Extended CV</strong></a>.
       </p>
     </div>
   </div>
@@ -124,7 +140,7 @@ const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\i
           <div class="pub-list">
             {papersByYear[year].map((paper) => (
               <PaperCard
-                id={paper.slug}
+                id={paper.id}
                 title={paper.data.title}
                 authors={paper.data.authors}
                 venue={paper.data.venue}
@@ -143,7 +159,32 @@ const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\i
   </div>
 
   <!-- ====================================================================
-       TAB 3: TOOLS
+       TAB 3: TEACHING
+       ==================================================================== -->
+  <div class="tab-pane" id="tab-teaching">
+    <div class="timeline-container">
+      {teachingYears.map((year) => (
+        <section class="year-group">
+          <div class="year-sticky-header">
+            <h3 class="year-number">{year}</h3>
+            <span class="year-count-badge">
+              {teachingByYear[year].length} {teachingByYear[year].length === 1 ? 'course' : 'courses'}
+            </span>
+            <div class="year-line"></div>
+          </div>
+
+          <div class="teaching-list">
+            {teachingByYear[year].map((entry) => (
+              <TeachingCard {...entry.data} />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       TAB 4: TOOLS
        ==================================================================== -->
   <div class="tab-pane" id="tab-tools">
     <!-- Tools Category Filter Bar -->
@@ -179,7 +220,7 @@ const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\i
   </div>
 
   <!-- ====================================================================
-       TAB 4: CONTACT
+       TAB 5: CONTACT
        ==================================================================== -->
   <div class="tab-pane" id="tab-contact">
     <div class="about-block">
@@ -208,7 +249,7 @@ const mathFormula = `$$\\mathcal{R}_{\\text{TSO-DSO}} = \\left\\{ (P_0, Q_0) \\i
           <div class="contact-icon"><i class="ai ai-google-scholar"></i></div>
           <div>
             <span class="contact-label">Google Scholar</span>
-            <span class="contact-value">Luis Lopez Diaz</span>
+            <span class="contact-value">Luis Lopez</span>
           </div>
         </a>
       </div>

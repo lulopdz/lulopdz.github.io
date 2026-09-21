@@ -9,7 +9,7 @@ order: 4
 bibtex: |
   @inproceedings{oliveros2024exploring,
     title={Exploring the Potential of V2G Integration for Grid Optimization in Colombia},
-    author={Ingrid Oliveros, Jose Soto, Luis Lopez, Elvin Jimenez},
+    author={Ingrid Oliveros and Jose Soto and Luis Lopez and Elvin Jimenez},
     booktitle={2024 IEEE Colombian Conference on Communications and Computing (COLCOM)},
     year={2024}
   }

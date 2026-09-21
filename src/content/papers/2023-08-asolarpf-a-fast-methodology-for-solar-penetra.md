@@ -9,7 +9,7 @@ order: 8
 bibtex: |
   @inproceedings{ripoll2023asolarpf,
     title={ASOLARPF: A Fast Methodology for Solar Penetration Power Flow Analysis},
-    author={Mateo Ripoll, Sergio Martínez, Ingrid Oliveros, José Soto, Luis López, Lacides Ripoll},
+    author={Mateo Ripoll and Sergio Martínez and Ingrid Oliveros and José Soto and Luis López and Lacides Ripoll},
     booktitle={2023 IEEE Colombian Caribbean Conference (C3)},
     year={2023}
   }

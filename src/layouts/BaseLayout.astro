@@ -1,0 +1,106 @@
+---
+// src/layouts/BaseLayout.astro
+// HTML shell shared by every page: metadata, icons, social tags, fonts, theme
+// bootstrap and the client script. Page chrome (sidebar, tabs, ...) is added by
+// the layouts and pages that wrap this one.
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'profile';
+}
+
+const { title, description, ogType = 'website' } = Astro.props;
+
+// Absolute URLs for canonical / social metadata (Astro.site comes from astro.config.mjs)
+const siteUrl = Astro.site ?? new URL('https://lulopdz.github.io');
+const canonicalUrl = new URL(Astro.url.pathname.replace(/index\.html$/, ''), siteUrl);
+const ogImageUrl = new URL('/og-image.jpg', siteUrl);
+const ogImageAlt = 'Luis Lopez - PhD Candidate, Apex Lab, Carleton University';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="author" content="Luis Lopez" />
+  <link rel="canonical" href={canonicalUrl.href} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <title>{title}</title>
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+
+  <!-- Open Graph (LinkedIn, Slack, Facebook, ...) -->
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content="Luis Lopez" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content={canonicalUrl.href} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageUrl.href} />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={ogImageAlt} />
+  {ogType === 'profile' && (
+    <>
+      <meta property="profile:first_name" content="Luis" />
+      <meta property="profile:last_name" content="Lopez" />
+    </>
+  )}
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl.href} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
+
+  <!-- Page-specific head content (e.g. structured data) -->
+  <slot name="head" />
+
+  <!-- Performance Preconnects & DNS Prefetch for Instant Font Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+  <!-- Fonts: Inter & JetBrains Mono (display=swap for zero-delay rendering) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Icons: FontAwesome & Academicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Immediate Theme Check (Prevents Flash) -->
+  <script is:inline>
+    (function() {
+      let savedTheme = null;
+      try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <slot />
+
+  <!-- Client-side behaviour (bundled and minified by Astro) -->
+  <script>
+    import '../scripts/interactions';
+  </script>
+</body>
+</html>

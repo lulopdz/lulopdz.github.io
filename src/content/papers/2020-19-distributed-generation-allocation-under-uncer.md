@@ -10,7 +10,7 @@ featured: true
 bibtex: |
   @inproceedings{lopez2020distributed,
     title={Distributed generation allocation under uncertainty},
-    author={Luis Lopez, Ingrid Oliveros, Alvaro Gonzalez-Castellanos, David Pozo},
+    author={Luis Lopez and Ingrid Oliveros and Alvaro Gonzalez-Castellanos and David Pozo},
     booktitle={2020 IEEE Power & Energy Society General Meeting (PESGM)},
     year={2020}
   }

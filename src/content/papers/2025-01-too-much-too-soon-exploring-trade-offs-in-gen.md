@@ -10,7 +10,7 @@ featured: true
 bibtex: |
   @inproceedings{lopez2025too,
     title={Too Much, Too Soon? Exploring Trade-offs in Generation Expansion Planning},
-    author={Luis Lopez, Kristen Schell},
+    author={Luis Lopez and Kristen Schell},
     booktitle={2025 IEEE Kiel PowerTech},
     year={2025}
   }

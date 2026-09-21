@@ -9,7 +9,7 @@ order: 3
 bibtex: |
   @article{lopez2024data,
     title={Data-driven power demand disaggregation to the substation level},
-    author={Luis Lopez, Kristen Schell},
+    author={Luis Lopez and Kristen Schell},
     journal={IET Conference Proceedings CP904},
     year={2024}
   }

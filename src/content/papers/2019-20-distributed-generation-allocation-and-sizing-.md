@@ -9,7 +9,7 @@ order: 20
 bibtex: |
   @inproceedings{lopez2019distributed,
     title={Distributed generation allocation and sizing: a comparison of metaheuristics techniques},
-    author={Luis Lopez, Jose Doria-Garcia, Carlos Pimienta, Adriana Arango-Manrique},
+    author={Luis Lopez and Jose Doria-Garcia and Carlos Pimienta and Adriana Arango-Manrique},
     booktitle={2019 IEEE International Conference on Environment and Electrical Engineering and 2019 IEEE Industrial and Commercial Power Systems Europe (EEEIC/I&CPS Europe)},
     year={2019}
   }

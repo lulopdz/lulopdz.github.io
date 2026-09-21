@@ -9,7 +9,7 @@ order: 6
 bibtex: |
   @inproceedings{soto2024improving,
     title={Improving Students' Oral Communication Skills in Electrical Engineering},
-    author={Jose D Soto, María G Calle, Ingrid Oliveros, Lacides Ripoll, Luis Lopez, Diana Rueda-Delgado},
+    author={Jose D Soto and María G Calle and Ingrid Oliveros and Lacides Ripoll and Luis Lopez and Diana Rueda-Delgado},
     booktitle={2024 IEEE Technology and Engineering Management Society (TEMSCON LATAM)},
     year={2024}
   }

@@ -1,0 +1,63 @@
+---
+// src/components/TeachingCard.astro
+interface Props {
+  course: string;
+  code: string;
+  institution: string;
+  institutionUrl?: string;
+  role: string;
+  term: string;
+  current?: boolean;
+  materialsDir?: string;
+  materialsLabel?: string;
+}
+
+const {
+  course,
+  code,
+  institution,
+  institutionUrl,
+  role,
+  term,
+  current = false,
+  materialsDir,
+  materialsLabel = 'Course Materials'
+} = Astro.props;
+
+// Materials live in public/teaching/<materialsDir>/ and are listed by src/pages/teaching/[course]/index.astro
+const materialsUrl = materialsDir ? `/teaching/${materialsDir}/` : undefined;
+---
+
+<article class={`teaching-card ${current ? 'current' : ''}`}>
+  <div class="teaching-header">
+    <div class="teaching-heading">
+      <span class="teaching-code">{code}</span>
+      <h3 class="teaching-title">{course}</h3>
+    </div>
+
+    <div class="teaching-badges">
+      <span class="badge-role"><i class="fas fa-chalkboard-teacher"></i> {role}</span>
+      {current && (
+        <span class="tool-wip-badge"><span class="pulse-dot"></span> Current</span>
+      )}
+    </div>
+  </div>
+
+  <p class="teaching-meta">
+    {institutionUrl ? (
+      <a href={institutionUrl} target="_blank" rel="noopener">{institution}</a>
+    ) : (
+      <span>{institution}</span>
+    )}
+    <span class="meta-sep" aria-hidden="true">&middot;</span>
+    <span>{term}</span>
+  </p>
+
+  {materialsUrl && (
+    <div class="pub-links">
+      <a href={materialsUrl} class="pub-badge">
+        <i class="fas fa-external-link-alt"></i> {materialsLabel}
+      </a>
+    </div>
+  )}
+</article>

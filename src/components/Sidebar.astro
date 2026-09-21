@@ -1,13 +1,31 @@
 ---
 // src/components/Sidebar.astro
+import { Image } from 'astro:assets';
+import profile from '../assets/profile.jpg';
+
+// The avatar box is 220px wide and the image is scaled to 150% of it (330px).
+// Astro generates 330px (1x) and 660px (2x) WebP variants at build time and
+// the browser picks one via srcset.
 ---
 
 <aside class="sidebar">
   <div class="avatar-container">
-    <img src="assets/images/profile.jpg" alt="Luis Lopez Diaz" class="avatar-img" width="220" height="148" />
+    <Image
+      src={profile}
+      alt="Luis Lopez"
+      class="avatar-img"
+      width={660}
+      widths={[330, 660]}
+      sizes="330px"
+      format="webp"
+      quality={70}
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
   </div>
 
-  <h1 class="sidebar-name">Luis Lopez-Diaz</h1>
+  <h1 class="sidebar-name">Luis Lopez</h1>
   <p class="sidebar-role">PhD Candidate</p>
   
   <p class="sidebar-affil">
@@ -17,7 +35,7 @@
 
   <!-- Minimalist Social Icons -->
   <div class="sidebar-icons">
-    <a href="https://drive.google.com/file/d/1zNwCbKcJ81FQDHWTxkNmvkMf4N3kPkV4/view" target="_blank" rel="noopener" class="icon-link cv-text" title="Curriculum Vitae">
+    <a href="/cv/luis-lopez-cv.pdf" target="_blank" rel="noopener" class="icon-link cv-text" title="Curriculum Vitae (PDF)">
       CV
     </a>
     <a href="https://scholar.google.com/citations?user=Lg3HTnMAAAAJ&hl=en" target="_blank" rel="noopener" class="icon-link" title="Google Scholar">
